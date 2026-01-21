@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ $# -ne 2 ]; then 
 	echo "Error: missing arg"
 	exit 1
