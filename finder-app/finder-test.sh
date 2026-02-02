@@ -2,13 +2,16 @@
 # Tester script for assignment 1 and assignment 2
 # Author: Siddhant Jajoo
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONF_DIR="$SCRIPT_DIR/conf"
+
 set -e
 set -u
 
 NUMFILES=10
 WRITESTR=AELD_IS_FUN
 WRITEDIR=/tmp/aeld-data
-username=$(cat conf/username.txt)
+username=$(cat "$CONF_DIR/username.txt")
 
 if [ $# -lt 3 ]
 then
@@ -32,7 +35,8 @@ echo "Writing ${NUMFILES} files containing string ${WRITESTR} to ${WRITEDIR}"
 rm -rf "${WRITEDIR}"
 
 # create $WRITEDIR if not assignment1
-assignment=`cat ../conf/assignment.txt`
+assignment=$(cat "$CONF_DIR/assignment.txt")
+username=$(cat "$CONF_DIR/username.txt")
 
 if [ $assignment != 'assignment1' ]
 then
@@ -49,8 +53,8 @@ then
 	fi
 fi
 #echo "Removing the old writer utility and compiling as a native application"
-make clean
-make
+#make clean
+#make
 
 for i in $( seq 1 $NUMFILES)
 do
@@ -71,3 +75,4 @@ else
 	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found"
 	exit 1
 fi
+
