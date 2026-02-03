@@ -1,12 +1,16 @@
 #!/bin/sh
-cd $(dirname $0)
-echo "Running test script"
+
+cd /home
+echo "Running finder test"
 ./finder-test.sh
 rc=$?
-if [ ${rc} -eq 0 ]; then
+
+if [ $rc -eq 0 ]; then
     echo "Completed with success!!"
 else
-    echo "Completed with failure, failed with rc=${rc}"
+    echo "Completed with failure, rc=$rc"
 fi
-echo "finder-app execution complete, dropping to terminal"
-/bin/sh
+
+echo "Shutting down QEMU"
+poweroff -f || halt -f
+
