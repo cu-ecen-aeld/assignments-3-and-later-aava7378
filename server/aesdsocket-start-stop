@@ -1,6 +1,7 @@
+#!/bin/sh
+
 # Used chatgpt for help on this startup script. Chat link: https://chatgpt.com/share/6991636f-aaa8-8004-a62b-4535a61d3c93 
 
-#!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          aesdsocket
 # Required-Start:    $network $remote_fs
