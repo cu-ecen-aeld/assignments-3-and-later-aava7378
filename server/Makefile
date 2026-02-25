@@ -5,12 +5,12 @@ SRCS   := aesdsocket.c
 OBJS   := $(SRCS:.c=.o)
 
 CROSS_COMPILE ?=
-CC := $(CROSS_COMPILE)gcc
+CC ?= $(CROSS_COMPILE)gcc
 
-CFLAGS   ?= -Wall -Wextra -Werror -O2 -g
+CFLAGS   ?= -Wall -Wextra -Werror -O2 -g -pthread
 CPPFLAGS ?=
 LDFLAGS  ?=
-LDLIBS   ?=
+LDLIBS   ?= -pthread
 
 .PHONY: all default clean
 default: all
