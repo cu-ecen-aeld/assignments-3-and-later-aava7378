@@ -12,6 +12,10 @@ CPPFLAGS ?=
 LDFLAGS  ?=
 LDLIBS   ?= -pthread
 
+ifdef USE_AESD_CHAR_DEVICE
+	CFLAGS += -DUSE_AESD_CHAR_DEVICE
+endif
+
 .PHONY: all default clean
 default: all
 all: $(TARGET)
