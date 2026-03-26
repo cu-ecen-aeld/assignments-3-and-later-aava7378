@@ -23,9 +23,7 @@
 #include <stddef.h>
 #include <time.h>
 
-#define USE_AESD_CHAR_DEVICE 0
-
-#if USE_AESD_CHAR_DEVICE
+#ifdef USE_AESD_CHAR_DEVICE
 #define DATAFILE "/dev/aesdchar"
 #else
 #define DATAFILE "/var/tmp/aesdsocketdata"
@@ -390,6 +388,7 @@ static void *client_thread_fn(void *arg)
     		return NULL;
 }
 
+#ifndef USE_AESD_CHAR_DEVICE
 static void *timestamp_thread_fn(void *arg)
 {
     	(void)arg;
@@ -431,7 +430,7 @@ static void *timestamp_thread_fn(void *arg)
     	return NULL;
 }
 
-
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -449,8 +448,8 @@ int main(int argc, char *argv[])
         	return EXIT_FAILURE;
     	}
 
-	#if !USE_AESD_CHAR_DEVICE
-    		unlink(DATAFILE);
+	#ifndef USE_AESD_CHAR_DEVICE
+		unlink(DATAFILE);
 	#endif
 
     	struct sigaction sa;
@@ -474,6 +473,7 @@ int main(int argc, char *argv[])
         	return EXIT_FAILURE;
     	}
 
+        #ifndef USE_AESD_CHAR_DEVICE
 
     	pthread_t ts_thread;
     	if (pthread_create(&ts_thread, NULL, timestamp_thread_fn, NULL) != 0) 
@@ -484,6 +484,7 @@ int main(int argc, char *argv[])
         	closelog();
         	return EXIT_FAILURE;
     	}
+	#endif
 
     	syslog(LOG_INFO, "Server listening on port %s", PORT);
 
@@ -532,8 +533,9 @@ int main(int argc, char *argv[])
 
     	syslog(LOG_INFO, "Shutdown requested, cleaning up...");
 
-    
+    	#ifndef USE_AESD_CHAR_DEVICE
     	pthread_join(ts_thread, NULL);
+	#endif	
 
     	request_all_threads_exit_and_join();
 
@@ -543,7 +545,7 @@ int main(int argc, char *argv[])
         	g_listen_fd = -1;
     	}
 
-	#if !USE_AESD_CHAR_DEVICE
+	#ifndef USE_AESD_CHAR_DEVICE
     		unlink(DATAFILE);
 	#endif
 
